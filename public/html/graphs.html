@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>title</title>
+    <title>Bitcoin Transactions</title>
     <link rel="stylesheet" href="../stylesheets/metricsgraphics.css">
 
     <!-- Latest compiled and minified CSS -->
@@ -11,12 +11,21 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
     <script data-main="../javascript/main" src="../javascript/require.js"></script>
   </head>
   <body>
-    <div id="transactions"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <div id="transactions"></div>
+        </div>
+        <div class="col-md-4">
+          <form>
+            <input type="text" id="startDate">
+            <input type="submit" value="Refresh">
+          </form>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
