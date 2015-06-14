@@ -64,11 +64,11 @@ object Application extends Controller {
     Ok(Json.toJson(metrics))
   }
   
-  def getTransactions = Action {
+  def getTransactions(start: Long) = Action {
     val days = 1
     val period = 60
     val endTime = new Date(System.currentTimeMillis())
-    val startTime = new Date(System.currentTimeMillis() - (days * 24 * 60 * 60 * 1000))
+    val startTime = new Date(start)
     val request = new GetMetricStatisticsRequest()
       .withEndTime(endTime)
       .withMetricName("Transactions")
