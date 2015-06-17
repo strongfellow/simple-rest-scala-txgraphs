@@ -12,16 +12,21 @@ requirejs.config({
 });
 
 requirejs(['d3', 'metricsgraphics', 'jquery-ui', 'bootstrap'], function(d3, mg) {
-
-  $(function() {
-
-    $("#startDate").datepicker();
-    
-    var start = Date.now() - 3 * 24 * 60 * 60 * 1000;
-    d3.json('/metrics/transactions?start=' + start, function(data) {
+  function load(start, minutes) {
+    var diff = Date.now() - start;
+    var minutes = 15;
+    var ONE_DAY = 24 * 60 * 60 * 1000;
+    for (var i = 0; i < 14; i++) {
+      if (diff < (i * ONE_DAY)) {
+        minutes = i;
+        break;
+      }
+    }
+    d3.json('/metrics/transactions?start=' + start + '&minutes=' + minutes, function(data) {
       var points = data.datapoints;
       for (var i = 0; i < points.length; i++) {
         points[i].date = new Date(points[i].timestamp);
+        points[i].avg = points[i].sum / (minutes * 60);
       }
       MG.data_graphic({
         title: "Transactions",
@@ -31,8 +36,20 @@ requirejs(['d3', 'metricsgraphics', 'jquery-ui', 'bootstrap'], function(d3, mg) 
         height: 250,
         target: '#transactions',
         x_accessor: 'date',
-        y_accessor: 'sum',
+        y_accessor: 'avg',
       });
     });
+  };
+
+  $(function() {
+    $("#startDate").datepicker();
+    $('#refresh-form').submit(function(event) {
+      var d = $('#startDate').datepicker('getDate').getTime();
+      console.log(d);
+      load(d, 60);
+      event.preventDefault();
+    });
+    var start = Date.now() - 3 * 24 * 60 * 60 * 1000;
+    load(start, 60);
   });
 });

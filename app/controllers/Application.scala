@@ -64,16 +64,15 @@ object Application extends Controller {
     Ok(Json.toJson(metrics))
   }
   
-  def getTransactions(start: Long) = Action {
+  def getTransactions(start: Long, minutes: Int) = Action {
     val days = 1
-    val period = 60
     val endTime = new Date(System.currentTimeMillis())
     val startTime = new Date(start)
     val request = new GetMetricStatisticsRequest()
       .withEndTime(endTime)
       .withMetricName("Transactions")
       .withNamespace("com.strongfellow.transactions")
-      .withPeriod(period * 60)
+      .withPeriod(minutes * 60)
       .withStartTime(startTime)
       .withStatistics(Statistic.Sum)
     val response = cloudWatch.getMetricStatistics(request)
